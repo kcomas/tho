@@ -4,7 +4,7 @@ use super::ops::Op;
 use super::ops::varops::VarOp;
 use super::super::var::Varables;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Action {
     Var {
         op: VarOp,
@@ -47,7 +47,7 @@ impl Action {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum AfterAction {
     Continue,
     Exit(i32),

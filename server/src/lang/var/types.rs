@@ -7,7 +7,7 @@ pub trait ShareVar {
     fn type_num(&self) -> i32;
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Var {
     Macro(Vec<Action>),
     String(Option<String>),
@@ -53,7 +53,7 @@ impl Var {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum DeclareVar {
     Macro,
     String,
