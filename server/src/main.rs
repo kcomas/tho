@@ -24,6 +24,19 @@ fn main() {
             success: AfterAction::Continue,
             failure: AfterAction::Panic,
         },
+        Action::Var {
+            op: VarOp::DeclareVar {
+                var_name: String::from("delete_me"),
+                var_type: DeclareVar::Int,
+            },
+            success: AfterAction::Continue,
+            failure: AfterAction::Panic,
+        },
+        Action::Var {
+            op: VarOp::DeleteVar(String::from("delete_me")),
+            success: AfterAction::Continue,
+            failure: AfterAction::Panic,
+        },
     ]);
 
     p.run();

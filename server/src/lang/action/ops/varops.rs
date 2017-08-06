@@ -9,6 +9,7 @@ pub enum VarOp {
         var_type: DeclareVar,
     },
     DeleteVar(String),
+    SetString { var_name: String, var_value: String },
 }
 
 impl VarOp {
@@ -18,7 +19,11 @@ impl VarOp {
                 ref var_name,
                 ref var_type,
             } => state.declare_var(var_name, var_type),
-            &VarOp::DeleteVar(ref var_name) => Ok(()),
+            &VarOp::DeleteVar(ref var_name) => state.delete_var(var_name),
+            &VarOp::SetString {
+                ref var_name,
+                ref var_value,
+            } => Ok(()),
         }
     }
 }
