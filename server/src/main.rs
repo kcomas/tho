@@ -16,10 +16,14 @@ fn main() {
     let mut p = Program::new();
 
     p.load_actions(vec![
-        Action::Var(VarOp::DeclareVar {
-            var_name: String::from("test"),
-            var_type: DeclareVar::String,
-        }),
+        Action::Var {
+            op: VarOp::DeclareVar {
+                var_name: String::from("test"),
+                var_type: DeclareVar::String,
+            },
+            success: AfterAction::Continue,
+            failure: AfterAction::PanicError,
+        },
     ]);
 
     p.run();

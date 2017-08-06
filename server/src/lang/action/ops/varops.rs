@@ -9,26 +9,16 @@ pub enum VarOp {
         var_type: DeclareVar,
     },
     DeleteVar(String),
-    GetVar {
-        var_name: String,
-        var_type: DeclareVar,
-    },
 }
 
 impl VarOp {
-    pub fn run(&self, state: &mut Varables) {
+    pub fn run(&self, state: &mut Varables) -> Result<(), String> {
         match self {
             &VarOp::DeclareVar {
                 ref var_name,
                 ref var_type,
-            } => {
-                state.declare_var(var_name, var_type);
-            }
-            &VarOp::DeleteVar(ref var_name) => {}
-            &VarOp::GetVar {
-                ref var_name,
-                ref var_type,
-            } => {}
+            } => state.declare_var(var_name, var_type),
+            &VarOp::DeleteVar(ref var_name) => Ok(()),
         }
     }
 }
