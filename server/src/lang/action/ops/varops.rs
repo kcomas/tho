@@ -2,6 +2,7 @@
 use super::super::super::var::types::DeclareVar;
 use super::super::super::var::Varables;
 use super::Op;
+use std::clone::Clone;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum VarOp {
@@ -14,6 +15,16 @@ pub enum VarOp {
         var_name: String,
         var_value: Option<String>,
     },
+}
+
+fn match_update<T: Clone>(rst: Result<&mut T, String>, var_value: &T) -> Result<(), String> {
+    match rst {
+        Ok(value) => {
+            *value = var_value.clone();
+            Ok(())
+        }
+        Err(msg) => Err(msg),
+    }
 }
 
 impl Op for VarOp {
@@ -29,13 +40,7 @@ impl Op for VarOp {
                 ref var_value,
             } => {
                 let mut rst = state.get_string(var_name);
-                match rst {
-                    Ok(value) => {
-                        *value = var_value.clone();
-                        Ok(())
-                    }
-                    Err(msg) => Err(msg),
-                }
+                match_update(rst, var_value)
             }
         }
     }
