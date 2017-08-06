@@ -1,5 +1,6 @@
 
 use std::process;
+use super::ops::Op;
 use super::ops::varops::VarOp;
 use super::super::var::Varables;
 
@@ -25,7 +26,12 @@ impl Action {
         }
     }
 
-    fn do_action(state: &mut Varables, op: &VarOp, success: &AfterAction, failure: &AfterAction) {
+    fn do_action<T: Op>(
+        state: &mut Varables,
+        op: &T,
+        success: &AfterAction,
+        failure: &AfterAction,
+    ) {
         let rst = op.run(state);
         Action::run_after_op(state, rst, success, failure)
     }
