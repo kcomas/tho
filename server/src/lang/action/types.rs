@@ -25,16 +25,18 @@ impl Action {
         }
     }
 
+    fn do_action(state: &mut Varables, op: &VarOp, success: &AfterAction, failure: &AfterAction) {
+        let rst = op.run(state);
+        Action::run_after_op(state, rst, success, failure)
+    }
+
     pub fn run(&self, state: &mut Varables) {
         match self {
             &Action::Var {
                 ref op,
                 ref success,
                 ref failure,
-            } => {
-                let rst = op.run(state);
-                Action::run_after_op(state, rst, success, failure)
-            }
+            } => Action::do_action(state, op, success, failure),
         }
     }
 }
