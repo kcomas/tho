@@ -22,7 +22,7 @@ fn main() {
                 var_type: DeclareVar::String,
             },
             success: AfterAction::Continue,
-            failure: AfterAction::PanicError,
+            failure: AfterAction::Panic,
         },
     ]);
 

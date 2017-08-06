@@ -43,10 +43,10 @@ impl Action {
 pub enum AfterAction {
     Continue,
     Exit(i32),
-    WarnError,
-    Warn(String),
-    PanicError,
-    Panic(String),
+    Warn,
+    WarnMessage(String),
+    Panic,
+    PanicMessage(String),
     // macro name
     Next(String),
 }
@@ -56,10 +56,10 @@ impl AfterAction {
         match self {
             &AfterAction::Continue => {}
             &AfterAction::Exit(ref code) => process::exit(*code),
-            &AfterAction::WarnError => println!("{}", error_message),
-            &AfterAction::Warn(ref message) => println!("{}", message),
-            &AfterAction::PanicError => panic!("{}", error_message),
-            &AfterAction::Panic(ref message) => panic!("{}", message),
+            &AfterAction::Warn => println!("{}", error_message),
+            &AfterAction::WarnMessage(ref message) => println!("{}", message),
+            &AfterAction::Panic => panic!("{}", error_message),
+            &AfterAction::PanicMessage(ref message) => panic!("{}", message),
             &AfterAction::Next(ref macro_name) => {}
         }
     }
