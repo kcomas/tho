@@ -38,6 +38,14 @@ fn main() {
             success: AfterAction::Continue,
             failure: AfterAction::Panic,
         },
+        Action::Var {
+            op: VarOp::SetString {
+                var_name: String::from("test"),
+                var_value: Some(String::from("woot")),
+            },
+            success: AfterAction::Continue,
+            failure: AfterAction::Panic,
+        },
     ]);
 
     p.run();

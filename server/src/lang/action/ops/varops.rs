@@ -10,7 +10,10 @@ pub enum VarOp {
         var_type: DeclareVar,
     },
     DeleteVar(String),
-    SetString { var_name: String, var_value: String },
+    SetString {
+        var_name: String,
+        var_value: Option<String>,
+    },
 }
 
 impl Op for VarOp {
@@ -24,7 +27,16 @@ impl Op for VarOp {
             &VarOp::SetString {
                 ref var_name,
                 ref var_value,
-            } => Ok(()),
+            } => {
+                let mut rst = state.get_string(var_name);
+                match rst {
+                    Ok(value) => {
+                        *value = var_value.clone();
+                        Ok(())
+                    }
+                    Err(msg) => Err(msg),
+                }
+            }
         }
     }
 }
