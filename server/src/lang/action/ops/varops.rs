@@ -24,6 +24,18 @@ pub enum VarOp {
         var_name: String,
         var_value: Option<i64>,
     },
+    SetFloat {
+        var_name: String,
+        var_value: Option<f64>,
+    },
+    SetSize {
+        var_name: String,
+        var_value: Option<usize>,
+    },
+    SetBool {
+        var_name: String,
+        var_value: Option<bool>,
+    },
 }
 
 fn match_update<T: Clone>(rst: Result<&mut T, String>, var_value: &T) -> Result<(), String> {
@@ -63,6 +75,27 @@ impl Op for VarOp {
                 ref var_value,
             } => {
                 let mut rst = state.get_int(var_name);
+                match_update(rst, var_value)
+            }
+            &VarOp::SetFloat {
+                ref var_name,
+                ref var_value,
+            } => {
+                let mut rst = state.get_float(var_name);
+                match_update(rst, var_value)
+            }
+            &VarOp::SetSize {
+                ref var_name,
+                ref var_value,
+            } => {
+                let mut rst = state.get_size(var_name);
+                match_update(rst, var_value)
+            }
+            &VarOp::SetBool {
+                ref var_name,
+                ref var_value,
+            } => {
+                let mut rst = state.get_bool(var_name);
                 match_update(rst, var_value)
             }
         }
