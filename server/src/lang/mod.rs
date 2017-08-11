@@ -6,6 +6,7 @@ use self::action::types::Action;
 use self::var::Varables;
 
 use serde_json;
+use std::process;
 
 pub struct Program {
     state: Varables,
@@ -56,7 +57,18 @@ impl Program {
 
     pub fn run(&mut self) {
         for action in self.actions.iter() {
-            action.run(&mut self.state);
+            let rst = action.run(&mut self.state);
+            match rst {
+                Ok(option) => {
+                    if let Some(string) = option {
+                        println!("{}", string);
+                    }
+                }
+                Err(string) => {
+                    println!("{}", string);
+                    process::exit(1);
+                }
+            }
         }
     }
 }

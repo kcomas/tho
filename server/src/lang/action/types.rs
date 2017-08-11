@@ -1,8 +1,9 @@
 
-use std::process;
 use super::ops::Op;
 use super::ops::varops::VarOp;
 use super::super::var::Varables;
+
+type ActionResult = Result<Option<String>, String>;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Action {
@@ -19,7 +20,7 @@ impl Action {
         result: Result<(), String>,
         success: &AfterAction,
         failure: &AfterAction,
-    ) {
+    ) -> ActionResult {
         match result {
             Ok(_) => success.run("No Error Occured"),
             Err(message) => failure.run(&message),
@@ -31,12 +32,12 @@ impl Action {
         op: &T,
         success: &AfterAction,
         failure: &AfterAction,
-    ) {
+    ) -> ActionResult {
         let rst = op.run(state);
         Action::run_after_op(state, rst, success, failure)
     }
 
-    pub fn run(&self, state: &mut Varables) {
+    pub fn run(&self, state: &mut Varables) -> ActionResult {
         match self {
             &Action::Var {
                 ref op,
@@ -50,7 +51,7 @@ impl Action {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum AfterAction {
     Continue,
-    Exit(i32),
+    Exit(),
     Warn,
     WarnMessage(String),
     Panic,
@@ -60,15 +61,15 @@ pub enum AfterAction {
 }
 
 impl AfterAction {
-    pub fn run(&self, error_message: &str) {
+    pub fn run(&self, error_message: &str) -> ActionResult {
         match self {
-            &AfterAction::Continue => {}
-            &AfterAction::Exit(ref code) => process::exit(*code),
-            &AfterAction::Warn => println!("{}", error_message),
-            &AfterAction::WarnMessage(ref message) => println!("{}", message),
-            &AfterAction::Panic => panic!("{}", error_message),
-            &AfterAction::PanicMessage(ref message) => panic!("{}", message),
-            &AfterAction::Next(ref macro_name) => {}
+            &AfterAction::Continue => Ok(None),
+            &AfterAction::Exit() => Err(String::from("Exit")),
+            &AfterAction::Warn => Ok(Some(format!("{}", error_message))),
+            &AfterAction::WarnMessage(ref message) => Ok(Some(format!("{}", message))),
+            &AfterAction::Panic => Err(format!("{}", error_message)),
+            &AfterAction::PanicMessage(ref message) => Err(format!("{}", message)),
+            &AfterAction::Next(ref macro_name) => Ok(None),
         }
     }
 }

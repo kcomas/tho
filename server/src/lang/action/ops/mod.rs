@@ -1,6 +1,5 @@
 
 pub mod varops;
-pub mod consoleops;
 
 use super::super::var::Varables;
 
