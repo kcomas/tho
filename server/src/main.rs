@@ -9,7 +9,6 @@ mod lang;
 
 use lang::Program;
 use lang::action::ops::varops::VarOp;
-use lang::action::ops::consoleops::ConsoleOp;
 use lang::action::types::{AfterAction, Action};
 use lang::var::types::{Var, DeclareVar};
 
