@@ -8,7 +8,6 @@ use self::var::Varables;
 use self::output::Output;
 
 use serde_json;
-use std::process;
 
 type JSONResult = Result<String, serde_json::Error>;
 
