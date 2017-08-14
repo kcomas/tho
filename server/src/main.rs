@@ -34,7 +34,7 @@ fn main() {
         },
         Action::Var {
             op: VarOp::DeleteVar(String::from("delete_me")),
-            success: AfterAction::Continue,
+            success: AfterAction::Warn,
             failure: AfterAction::Panic,
         },
         Action::Var {
@@ -51,4 +51,5 @@ fn main() {
 
     println!("Actions {}", p.get_actions_str_pretty().unwrap());
     println!("State {}", p.get_state_str_pretty().unwrap());
+    println!("Output {}", p.get_output_str_pretty().unwrap());
 }

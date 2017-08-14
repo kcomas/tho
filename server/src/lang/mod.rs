@@ -1,14 +1,19 @@
 
 pub mod var;
 pub mod action;
+pub mod output;
 
 use self::action::types::Action;
 use self::var::Varables;
+use self::output::Output;
 
 use serde_json;
 use std::process;
 
+type JSONResult = Result<String, serde_json::Error>;
+
 pub struct Program {
+    output: Output,
     state: Varables,
     actions: Vec<Action>,
 }
@@ -16,6 +21,7 @@ pub struct Program {
 impl Program {
     pub fn new() -> Program {
         Program {
+            output: Output::new(),
             state: Varables::new(),
             actions: Vec::new(),
         }
@@ -34,11 +40,11 @@ impl Program {
         false
     }
 
-    pub fn get_actions_str(&self) -> Result<String, serde_json::Error> {
+    pub fn get_actions_str(&self) -> JSONResult {
         serde_json::to_string(&self.actions)
     }
 
-    pub fn get_actions_str_pretty(&self) -> Result<String, serde_json::Error> {
+    pub fn get_actions_str_pretty(&self) -> JSONResult {
         serde_json::to_string_pretty(&self.actions)
     }
 
@@ -56,14 +62,21 @@ impl Program {
         false
     }
 
-    pub fn get_state_str(&self) -> Result<String, serde_json::Error> {
+    pub fn get_state_str(&self) -> JSONResult {
         serde_json::to_string(&self.state)
     }
 
-    pub fn get_state_str_pretty(&self) -> Result<String, serde_json::Error> {
+    pub fn get_state_str_pretty(&self) -> JSONResult {
         serde_json::to_string_pretty(&self.state)
     }
 
+    pub fn get_output_str(&self) -> JSONResult {
+        serde_json::to_string(&self.output)
+    }
+
+    pub fn get_output_str_pretty(&self) -> JSONResult {
+        serde_json::to_string_pretty(&self.output)
+    }
 
     pub fn run(&mut self) {
         for action in self.actions.iter() {
@@ -71,11 +84,11 @@ impl Program {
             match rst {
                 Ok(option) => {
                     if let Some(string) = option {
-                        println!("{}", string);
+                        self.output.warn(string);
                     }
                 }
                 Err(string) => {
-                    println!("{}", string);
+                    self.output.error(string);
                     break;
                 }
             }
