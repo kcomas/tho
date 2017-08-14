@@ -18,20 +18,11 @@ impl Varables {
         Varables { data: HashMap::new() }
     }
 
-    pub fn declare_var(&mut self, var_name: &String, var_type: &DeclareVar) -> Result<(), String> {
+    pub fn declare_var(&mut self, var_name: &String, var: &Var) -> Result<(), String> {
         if let Some(_) = self.data.get(var_name) {
             return declare_error(var_name);
         }
-        let mut new_var = match var_type {
-            &DeclareVar::Macro => Var::Macro(Vec::new()),
-            &DeclareVar::String => Var::String(None),
-            &DeclareVar::Int => Var::Int(None),
-            &DeclareVar::Float => Var::Float(None),
-            &DeclareVar::Size => Var::Size(None),
-            &DeclareVar::Bool => Var::Bool(None),
-            &DeclareVar::Array => Var::Array(Box::new(Vec::new())),
-        };
-        self.data.insert(var_name.clone(), new_var);
+        self.data.insert(var_name.clone(), var.clone());
         Ok(())
     }
 
@@ -120,7 +111,7 @@ impl Varables {
         }
     }
 
-    pub fn get_array(&mut self, var_name: &String) -> Result<&mut Vec<Var>, String> {
+    pub fn get_array(&mut self, var_name: &String) -> Result<&mut Option<Box<Vec<Var>>>, String> {
         let rst = self.get_var(var_name);
         match rst {
             Ok(var) => {

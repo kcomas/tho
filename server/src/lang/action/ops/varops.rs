@@ -1,6 +1,6 @@
 
 use super::super::super::action::types::Action;
-use super::super::super::var::types::DeclareVar;
+use super::super::super::var::types::{DeclareVar, Var};
 use super::super::super::var::Varables;
 use super::super::super::output::Output;
 use super::Op;
@@ -8,10 +8,7 @@ use std::clone::Clone;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum VarOp {
-    DeclareVar {
-        var_name: String,
-        var_type: DeclareVar,
-    },
+    DeclareVar { var_name: String, var: Var },
     DeleteVar(String),
     SetMacro {
         var_name: String,
@@ -54,8 +51,8 @@ impl Op for VarOp {
         match self {
             &VarOp::DeclareVar {
                 ref var_name,
-                ref var_type,
-            } => state.declare_var(var_name, var_type),
+                ref var,
+            } => state.declare_var(var_name, var),
             &VarOp::DeleteVar(ref var_name) => state.delete_var(var_name),
             &VarOp::SetMacro {
                 ref var_name,

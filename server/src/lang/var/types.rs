@@ -15,7 +15,7 @@ pub enum Var {
     Float(Option<f64>),
     Size(Option<usize>),
     Bool(Option<bool>),
-    Array(Box<Vec<Var>>),
+    Array(Option<Box<Vec<Var>>>),
 }
 
 impl ShareVar for Var {

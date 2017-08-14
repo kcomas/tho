@@ -1,5 +1,6 @@
 
 pub mod varops;
+pub mod arrayops;
 
 use super::super::var::Varables;
 use super::super::output::Output;

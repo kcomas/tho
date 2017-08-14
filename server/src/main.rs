@@ -18,8 +18,16 @@ fn main() {
     p.load_actions(vec![
         Action::Var {
             op: VarOp::DeclareVar {
-                var_name: String::from("test"),
-                var_type: DeclareVar::String,
+                var_name: String::from("test_string"),
+                var: Var::String(None),
+            },
+            success: AfterAction::Continue,
+            failure: AfterAction::Panic,
+        },
+        Action::Var {
+            op: VarOp::DeclareVar {
+                var_name: String::from("test_float"),
+                var: Var::Float(Some(1.2)),
             },
             success: AfterAction::Continue,
             failure: AfterAction::Panic,
@@ -27,7 +35,7 @@ fn main() {
         Action::Var {
             op: VarOp::DeclareVar {
                 var_name: String::from("delete_me"),
-                var_type: DeclareVar::Int,
+                var: Var::Int(None),
             },
             success: AfterAction::Continue,
             failure: AfterAction::Panic,
