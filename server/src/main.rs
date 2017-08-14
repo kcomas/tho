@@ -47,7 +47,7 @@ fn main() {
         },
         Action::Var {
             op: VarOp::SetString {
-                var_name: String::from("test"),
+                var_name: String::from("test_string"),
                 var_value: Some(String::from("woot")),
             },
             success: AfterAction::Continue,

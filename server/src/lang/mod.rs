@@ -86,9 +86,11 @@ impl Program {
                     if let Some(string) = option {
                         self.output.warn(string);
                     }
+                    self.output.set_exit_status(0);
                 }
                 Err(string) => {
                     self.output.error(string);
+                    self.output.set_exit_status(1);
                     break;
                 }
             }
