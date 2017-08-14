@@ -35,8 +35,13 @@ impl Program {
     }
 
     pub fn get_actions_str(&self) -> Result<String, serde_json::Error> {
+        serde_json::to_string(&self.actions)
+    }
+
+    pub fn get_actions_str_pretty(&self) -> Result<String, serde_json::Error> {
         serde_json::to_string_pretty(&self.actions)
     }
+
 
     pub fn load_state(&mut self, state: Varables) {
         self.state = state;
@@ -52,8 +57,13 @@ impl Program {
     }
 
     pub fn get_state_str(&self) -> Result<String, serde_json::Error> {
+        serde_json::to_string(&self.state)
+    }
+
+    pub fn get_state_str_pretty(&self) -> Result<String, serde_json::Error> {
         serde_json::to_string_pretty(&self.state)
     }
+
 
     pub fn run(&mut self) {
         for action in self.actions.iter() {

@@ -49,6 +49,6 @@ fn main() {
 
     p.run();
 
-    println!("Actions {}", p.get_actions_str().unwrap());
-    println!("State {}", p.get_state_str().unwrap());
+    println!("Actions {}", p.get_actions_str_pretty().unwrap());
+    println!("State {}", p.get_state_str_pretty().unwrap());
 }
