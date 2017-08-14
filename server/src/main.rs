@@ -22,7 +22,7 @@ fn main() {
                 var: Var::String(None),
             },
             success: AfterAction::Continue,
-            failure: AfterAction::Panic,
+            failure: AfterAction::Error,
         },
         Action::Var {
             op: VarOp::DeclareVar {
@@ -30,7 +30,7 @@ fn main() {
                 var: Var::Float(Some(1.2)),
             },
             success: AfterAction::Continue,
-            failure: AfterAction::Panic,
+            failure: AfterAction::Error,
         },
         Action::Var {
             op: VarOp::DeclareVar {
@@ -38,12 +38,12 @@ fn main() {
                 var: Var::Int(None),
             },
             success: AfterAction::Continue,
-            failure: AfterAction::Panic,
+            failure: AfterAction::Error,
         },
         Action::Var {
             op: VarOp::DeleteVar(String::from("delete_me")),
-            success: AfterAction::Warn,
-            failure: AfterAction::Panic,
+            success: AfterAction::Log,
+            failure: AfterAction::Error,
         },
         Action::Var {
             op: VarOp::SetString {
@@ -51,7 +51,15 @@ fn main() {
                 var_value: Some(String::from("woot")),
             },
             success: AfterAction::Continue,
-            failure: AfterAction::Panic,
+            failure: AfterAction::Error,
+        },
+        Action::Var {
+            op: VarOp::DeclareVar {
+                var_name: String::from("arr"),
+                var: Var::Array(None),
+            },
+            success: AfterAction::Log,
+            failure: AfterAction::Error,
         },
     ]);
 

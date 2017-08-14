@@ -82,7 +82,7 @@ impl Program {
             match rst {
                 Ok(option) => {
                     if let Some(string) = option {
-                        self.output.warn(string);
+                        self.output.log(string);
                     }
                     self.output.set_exit_status(0);
                 }

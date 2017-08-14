@@ -1,7 +1,7 @@
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 enum OutputType {
-    Warning(String),
+    Log(String),
     Error(String),
 }
 
@@ -23,8 +23,8 @@ impl Output {
         self.exit_status = Some(status);
     }
 
-    pub fn warn(&mut self, msg: String) {
-        self.messages.push(OutputType::Warning(msg));
+    pub fn log(&mut self, msg: String) {
+        self.messages.push(OutputType::Log(msg));
     }
 
     pub fn error(&mut self, msg: String) {

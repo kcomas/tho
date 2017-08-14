@@ -9,4 +9,9 @@ use std::clone::Clone;
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum ArrayOP {
     Push { var: Var },
+    Pop,
+    UnShify { var: Var },
+    Shift,
+    Length,
+    Get,
 }

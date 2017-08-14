@@ -5,7 +5,7 @@ pub mod types;
 mod util;
 
 use super::action::types::Action;
-use self::types::{Var, DeclareVar};
+use self::types::{Var, DeclareVar, ShareVar};
 use self::util::{declare_error, not_found_error, wrong_type_error};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -18,17 +18,17 @@ impl Varables {
         Varables { data: HashMap::new() }
     }
 
-    pub fn declare_var(&mut self, var_name: &String, var: &Var) -> Result<(), String> {
+    pub fn declare_var(&mut self, var_name: &String, var: &Var) -> Result<String, String> {
         if let Some(_) = self.data.get(var_name) {
             return declare_error(var_name);
         }
         self.data.insert(var_name.clone(), var.clone());
-        Ok(())
+        Ok(format!("Created {}: {}", var.type_str(), var_name))
     }
 
-    pub fn delete_var(&mut self, var_name: &String) -> Result<(), String> {
+    pub fn delete_var(&mut self, var_name: &String) -> Result<String, String> {
         if let Some(_) = self.data.remove(var_name) {
-            return Ok(());
+            return Ok(format!("Deleted Var: {}", var_name));
         }
         not_found_error(var_name)
     }

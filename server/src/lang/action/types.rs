@@ -17,12 +17,12 @@ pub enum Action {
 
 impl Action {
     fn run_after_op(
-        result: Result<(), String>,
+        result: Result<String, String>,
         success: &AfterAction,
         failure: &AfterAction,
     ) -> ActionResult {
         match result {
-            Ok(_) => success.run("No Error Occured"),
+            Ok(message) => success.run(&message),
             Err(message) => failure.run(&message),
         }
     }
@@ -53,23 +53,23 @@ impl Action {
 pub enum AfterAction {
     Continue,
     Exit(),
-    Warn,
-    WarnMessage(String),
-    Panic,
-    PanicMessage(String),
+    Log,
+    LogMessage(String),
+    Error,
+    ErrorMessage(String),
     // macro name
     Next(String),
 }
 
 impl AfterAction {
-    pub fn run(&self, error_message: &str) -> ActionResult {
+    pub fn run(&self, action_message: &str) -> ActionResult {
         match self {
             &AfterAction::Continue => Ok(None),
             &AfterAction::Exit() => Err(String::from("Exit")),
-            &AfterAction::Warn => Ok(Some(format!("{}", error_message))),
-            &AfterAction::WarnMessage(ref message) => Ok(Some(format!("{}", message))),
-            &AfterAction::Panic => Err(format!("{}", error_message)),
-            &AfterAction::PanicMessage(ref message) => Err(format!("{}", message)),
+            &AfterAction::Log => Ok(Some(format!("{}", action_message))),
+            &AfterAction::LogMessage(ref message) => Ok(Some(format!("{}", message))),
+            &AfterAction::Error => Err(format!("{}", action_message)),
+            &AfterAction::ErrorMessage(ref message) => Err(format!("{}", message)),
             &AfterAction::Next(ref macro_name) => Ok(None),
         }
     }
