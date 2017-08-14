@@ -25,13 +25,13 @@ impl Program {
         self.actions = actions;
     }
 
-    pub fn load_actions_str(&mut self, actions: &str) {
+    pub fn load_actions_str(&mut self, actions: &str) -> bool {
         let rst = serde_json::from_str(actions);
         if let Ok(act) = rst {
             self.load_actions(act);
-        } else {
-            panic!("Unable To Load Actions");
+            return true;
         }
+        false
     }
 
     pub fn get_actions_str(&self) -> Result<String, serde_json::Error> {
@@ -42,13 +42,13 @@ impl Program {
         self.state = state;
     }
 
-    pub fn load_state_str(&mut self, state: &str) {
+    pub fn load_state_str(&mut self, state: &str) -> bool {
         let rst = serde_json::from_str(state);
         if let Ok(st) = rst {
             self.load_state(st);
-        } else {
-            panic!("Unable To Load State");
+            return true;
         }
+        false
     }
 
     pub fn get_state_str(&self) -> Result<String, serde_json::Error> {
@@ -66,7 +66,7 @@ impl Program {
                 }
                 Err(string) => {
                     println!("{}", string);
-                    process::exit(1);
+                    break;
                 }
             }
         }
