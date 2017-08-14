@@ -47,7 +47,6 @@ impl Program {
         serde_json::to_string_pretty(&self.actions)
     }
 
-
     pub fn load_state(&mut self, state: Varables) {
         self.state = state;
     }
