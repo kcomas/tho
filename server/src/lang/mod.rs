@@ -80,7 +80,7 @@ impl Program {
 
     pub fn run(&mut self) {
         for action in self.actions.iter() {
-            let rst = action.run(&mut self.state);
+            let rst = action.run(&mut self.state, &mut self.output);
             match rst {
                 Ok(option) => {
                     if let Some(string) = option {

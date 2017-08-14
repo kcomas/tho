@@ -2,6 +2,7 @@
 use super::super::super::action::types::Action;
 use super::super::super::var::types::DeclareVar;
 use super::super::super::var::Varables;
+use super::super::super::output::Output;
 use super::Op;
 use std::clone::Clone;
 
@@ -49,7 +50,7 @@ fn match_update<T: Clone>(rst: Result<&mut T, String>, var_value: &T) -> Result<
 }
 
 impl Op for VarOp {
-    fn run(&self, state: &mut Varables) -> Result<(), String> {
+    fn run(&self, state: &mut Varables, output: &mut Output) -> Result<(), String> {
         match self {
             &VarOp::DeclareVar {
                 ref var_name,

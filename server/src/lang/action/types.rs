@@ -2,6 +2,7 @@
 use super::ops::Op;
 use super::ops::varops::VarOp;
 use super::super::var::Varables;
+use super::super::output::Output;
 
 type ActionResult = Result<Option<String>, String>;
 
@@ -16,7 +17,6 @@ pub enum Action {
 
 impl Action {
     fn run_after_op(
-        state: &mut Varables,
         result: Result<(), String>,
         success: &AfterAction,
         failure: &AfterAction,
@@ -29,21 +29,22 @@ impl Action {
 
     fn do_action<T: Op>(
         state: &mut Varables,
+        output: &mut Output,
         op: &T,
         success: &AfterAction,
         failure: &AfterAction,
     ) -> ActionResult {
-        let rst = op.run(state);
-        Action::run_after_op(state, rst, success, failure)
+        let rst = op.run(state, output);
+        Action::run_after_op(rst, success, failure)
     }
 
-    pub fn run(&self, state: &mut Varables) -> ActionResult {
+    pub fn run(&self, state: &mut Varables, output: &mut Output) -> ActionResult {
         match self {
             &Action::Var {
                 ref op,
                 ref success,
                 ref failure,
-            } => Action::do_action(state, op, success, failure),
+            } => Action::do_action(state, output, op, success, failure),
         }
     }
 }
