@@ -1,17 +1,11 @@
 
-#[macro_use]
-extern crate serde_derive;
+extern crate server;
 
-extern crate serde;
-extern crate serde_json;
-
-mod lang;
-
-use lang::Program;
-use lang::action::ops::varops::VarOp;
-use lang::action::ops::arrayops::ArrayOp;
-use lang::action::types::{AfterAction, Action};
-use lang::var::types::Var;
+use server::lang::Program;
+use server::lang::action::ops::varops::VarOp;
+use server::lang::action::ops::arrayops::ArrayOp;
+use server::lang::action::types::{AfterAction, Action};
+use server::lang::var::types::Var;
 
 fn main() {
     let mut p = Program::new();
