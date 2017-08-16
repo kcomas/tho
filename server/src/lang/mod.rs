@@ -39,6 +39,10 @@ impl Program {
         false
     }
 
+    pub fn get_actions(&self) -> &Vec<Action> {
+        &self.actions
+    }
+
     pub fn get_actions_str(&self) -> JSONResult {
         serde_json::to_string(&self.actions)
     }
@@ -60,12 +64,20 @@ impl Program {
         false
     }
 
+    pub fn get_state(&self) -> &Varables {
+        &self.state
+    }
+
     pub fn get_state_str(&self) -> JSONResult {
         serde_json::to_string(&self.state)
     }
 
     pub fn get_state_str_pretty(&self) -> JSONResult {
         serde_json::to_string_pretty(&self.state)
+    }
+
+    pub fn get_output(&self) -> &Output {
+        &self.output
     }
 
     pub fn get_output_str(&self) -> JSONResult {

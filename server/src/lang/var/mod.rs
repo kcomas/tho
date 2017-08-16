@@ -8,7 +8,7 @@ use super::action::types::Action;
 use self::types::{Var, DeclareVar, ShareVar};
 use self::util::{declare_error, not_found_error, wrong_type_error};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Varables {
     data: HashMap<String, Var>,
 }
@@ -18,22 +18,22 @@ impl Varables {
         Varables { data: HashMap::new() }
     }
 
-    pub fn declare_var(&mut self, var_name: &String, var: &Var) -> Result<String, String> {
+    pub fn declare_var(&mut self, var_name: &str, var: &Var) -> Result<String, String> {
         if let Some(_) = self.data.get(var_name) {
             return declare_error(var_name);
         }
-        self.data.insert(var_name.clone(), var.clone());
+        self.data.insert(String::from(var_name), var.clone());
         Ok(format!("Created {}: {}", var.type_str(), var_name))
     }
 
-    pub fn delete_var(&mut self, var_name: &String) -> Result<String, String> {
+    pub fn delete_var(&mut self, var_name: &str) -> Result<String, String> {
         if let Some(_) = self.data.remove(var_name) {
             return Ok(format!("Deleted Var: {}", var_name));
         }
         not_found_error(var_name)
     }
 
-    pub fn get_macro(&mut self, var_name: &String) -> Result<&mut Vec<Action>, String> {
+    pub fn get_macro(&mut self, var_name: &str) -> Result<&mut Vec<Action>, String> {
         let rst = self.get_var(var_name);
         match rst {
             Ok(var) => {
@@ -46,7 +46,7 @@ impl Varables {
         }
     }
 
-    pub fn get_string(&mut self, var_name: &String) -> Result<&mut Option<String>, String> {
+    pub fn get_string(&mut self, var_name: &str) -> Result<&mut Option<String>, String> {
         let rst = self.get_var(var_name);
         match rst {
             Ok(var) => {
@@ -59,7 +59,7 @@ impl Varables {
         }
     }
 
-    pub fn get_int(&mut self, var_name: &String) -> Result<&mut Option<i64>, String> {
+    pub fn get_int(&mut self, var_name: &str) -> Result<&mut Option<i64>, String> {
         let rst = self.get_var(var_name);
         match rst {
             Ok(var) => {
@@ -72,7 +72,7 @@ impl Varables {
         }
     }
 
-    pub fn get_float(&mut self, var_name: &String) -> Result<&mut Option<f64>, String> {
+    pub fn get_float(&mut self, var_name: &str) -> Result<&mut Option<f64>, String> {
         let rst = self.get_var(var_name);
         match rst {
             Ok(var) => {
@@ -85,7 +85,7 @@ impl Varables {
         }
     }
 
-    pub fn get_size(&mut self, var_name: &String) -> Result<&mut Option<usize>, String> {
+    pub fn get_size(&mut self, var_name: &str) -> Result<&mut Option<usize>, String> {
         let rst = self.get_var(var_name);
         match rst {
             Ok(var) => {
@@ -98,7 +98,7 @@ impl Varables {
         }
     }
 
-    pub fn get_bool(&mut self, var_name: &String) -> Result<&mut Option<bool>, String> {
+    pub fn get_bool(&mut self, var_name: &str) -> Result<&mut Option<bool>, String> {
         let rst = self.get_var(var_name);
         match rst {
             Ok(var) => {
@@ -111,7 +111,7 @@ impl Varables {
         }
     }
 
-    pub fn get_array(&mut self, var_name: &String) -> Result<&mut Option<Box<Vec<Var>>>, String> {
+    pub fn get_array(&mut self, var_name: &str) -> Result<&mut Option<Box<Vec<Var>>>, String> {
         let rst = self.get_var(var_name);
         match rst {
             Ok(var) => {
@@ -124,7 +124,7 @@ impl Varables {
         }
     }
 
-    fn get_var(&mut self, var_name: &String) -> Result<&mut Var, String> {
+    fn get_var(&mut self, var_name: &str) -> Result<&mut Var, String> {
         if let Some(var) = self.data.get_mut(var_name) {
             return Ok(var);
         }
