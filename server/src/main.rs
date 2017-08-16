@@ -9,8 +9,9 @@ mod lang;
 
 use lang::Program;
 use lang::action::ops::varops::VarOp;
+use lang::action::ops::arrayops::ArrayOp;
 use lang::action::types::{AfterAction, Action};
-use lang::var::types::{Var, DeclareVar};
+use lang::var::types::Var;
 
 fn main() {
     let mut p = Program::new();
@@ -59,6 +60,22 @@ fn main() {
                 var: Var::Array(None),
             },
             success: AfterAction::Log,
+            failure: AfterAction::Error,
+        },
+        Action::Array {
+            op: ArrayOp::Push {
+                array_name: String::from("arr"),
+                var: Var::Int(Some(2)),
+            },
+            success: AfterAction::Log,
+            failure: AfterAction::Error,
+        },
+        Action::Array {
+            op: ArrayOp::Push {
+                array_name: String::from("arr"),
+                var: Var::String(Some(String::from("Idx 2"))),
+            },
+            success: AfterAction::Continue,
             failure: AfterAction::Error,
         },
     ]);

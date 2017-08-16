@@ -1,6 +1,6 @@
 
 use super::super::super::action::types::Action;
-use super::super::super::var::types::{DeclareVar, Var};
+use super::super::super::var::types::Var;
 use super::super::super::var::Varables;
 use super::super::super::output::Output;
 use super::Op;

@@ -1,6 +1,7 @@
 
 use super::ops::Op;
 use super::ops::varops::VarOp;
+use super::ops::arrayops::ArrayOp;
 use super::super::var::Varables;
 use super::super::output::Output;
 
@@ -10,6 +11,11 @@ type ActionResult = Result<Option<String>, String>;
 pub enum Action {
     Var {
         op: VarOp,
+        success: AfterAction,
+        failure: AfterAction,
+    },
+    Array {
+        op: ArrayOp,
         success: AfterAction,
         failure: AfterAction,
     },
@@ -41,6 +47,11 @@ impl Action {
     pub fn run(&self, state: &mut Varables, output: &mut Output) -> ActionResult {
         match self {
             &Action::Var {
+                ref op,
+                ref success,
+                ref failure,
+            } => Action::do_action(state, output, op, success, failure),
+            &Action::Array {
                 ref op,
                 ref success,
                 ref failure,
