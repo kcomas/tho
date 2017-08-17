@@ -25,7 +25,7 @@ fn declare_int() {
 
     let mut state = (*p.get_state()).clone();
 
-    let rst = state.get_int("test");
+    let rst = state.get_int_mut("test");
 
     assert!(rst.is_ok());
 

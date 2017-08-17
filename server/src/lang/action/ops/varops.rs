@@ -62,42 +62,42 @@ impl Op for VarOp {
                 ref var_name,
                 ref var_value,
             } => {
-                let rst = state.get_macro(var_name);
+                let rst = state.get_macro_mut(var_name);
                 match_update(rst, var_name, var_value)
             }
             &VarOp::SetString {
                 ref var_name,
                 ref var_value,
             } => {
-                let rst = state.get_string(var_name);
+                let rst = state.get_string_mut(var_name);
                 match_update(rst, var_name, var_value)
             }
             &VarOp::SetInt {
                 ref var_name,
                 ref var_value,
             } => {
-                let rst = state.get_int(var_name);
+                let rst = state.get_int_mut(var_name);
                 match_update(rst, var_name, var_value)
             }
             &VarOp::SetFloat {
                 ref var_name,
                 ref var_value,
             } => {
-                let rst = state.get_float(var_name);
+                let rst = state.get_float_mut(var_name);
                 match_update(rst, var_name, var_value)
             }
             &VarOp::SetSize {
                 ref var_name,
                 ref var_value,
             } => {
-                let rst = state.get_size(var_name);
+                let rst = state.get_size_mut(var_name);
                 match_update(rst, var_name, var_value)
             }
             &VarOp::SetBool {
                 ref var_name,
                 ref var_value,
             } => {
-                let rst = state.get_bool(var_name);
+                let rst = state.get_bool_mut(var_name);
                 match_update(rst, var_name, var_value)
             }
         }

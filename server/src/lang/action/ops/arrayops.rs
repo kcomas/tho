@@ -31,7 +31,7 @@ impl Op for ArrayOp {
                 ref array_name,
                 ref var,
             } => {
-                let rst = state.get_array(array_name);
+                let rst = state.get_array_mut(array_name);
                 match rst {
                     Ok(option_array) => {
                         if let None = *option_array {

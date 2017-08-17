@@ -33,8 +33,8 @@ impl Varables {
         not_found_error(var_name)
     }
 
-    pub fn get_macro(&mut self, var_name: &str) -> Result<&mut Vec<Action>, String> {
-        let rst = self.get_var(var_name);
+    pub fn get_macro_mut(&mut self, var_name: &str) -> Result<&mut Vec<Action>, String> {
+        let rst = self.get_var_mut(var_name);
         match rst {
             Ok(var) => {
                 if let Var::Macro(ref mut actions) = *var {
@@ -46,8 +46,8 @@ impl Varables {
         }
     }
 
-    pub fn get_string(&mut self, var_name: &str) -> Result<&mut Option<String>, String> {
-        let rst = self.get_var(var_name);
+    pub fn get_string_mut(&mut self, var_name: &str) -> Result<&mut Option<String>, String> {
+        let rst = self.get_var_mut(var_name);
         match rst {
             Ok(var) => {
                 if let Var::String(ref mut string) = *var {
@@ -59,8 +59,8 @@ impl Varables {
         }
     }
 
-    pub fn get_int(&mut self, var_name: &str) -> Result<&mut Option<i64>, String> {
-        let rst = self.get_var(var_name);
+    pub fn get_int_mut(&mut self, var_name: &str) -> Result<&mut Option<i64>, String> {
+        let rst = self.get_var_mut(var_name);
         match rst {
             Ok(var) => {
                 if let Var::Int(ref mut int) = *var {
@@ -72,8 +72,8 @@ impl Varables {
         }
     }
 
-    pub fn get_float(&mut self, var_name: &str) -> Result<&mut Option<f64>, String> {
-        let rst = self.get_var(var_name);
+    pub fn get_float_mut(&mut self, var_name: &str) -> Result<&mut Option<f64>, String> {
+        let rst = self.get_var_mut(var_name);
         match rst {
             Ok(var) => {
                 if let Var::Float(ref mut float) = *var {
@@ -85,8 +85,8 @@ impl Varables {
         }
     }
 
-    pub fn get_size(&mut self, var_name: &str) -> Result<&mut Option<usize>, String> {
-        let rst = self.get_var(var_name);
+    pub fn get_size_mut(&mut self, var_name: &str) -> Result<&mut Option<usize>, String> {
+        let rst = self.get_var_mut(var_name);
         match rst {
             Ok(var) => {
                 if let Var::Size(ref mut size) = *var {
@@ -98,8 +98,8 @@ impl Varables {
         }
     }
 
-    pub fn get_bool(&mut self, var_name: &str) -> Result<&mut Option<bool>, String> {
-        let rst = self.get_var(var_name);
+    pub fn get_bool_mut(&mut self, var_name: &str) -> Result<&mut Option<bool>, String> {
+        let rst = self.get_var_mut(var_name);
         match rst {
             Ok(var) => {
                 if let Var::Bool(ref mut boolean) = *var {
@@ -111,8 +111,8 @@ impl Varables {
         }
     }
 
-    pub fn get_array(&mut self, var_name: &str) -> Result<&mut Option<Box<Vec<Var>>>, String> {
-        let rst = self.get_var(var_name);
+    pub fn get_array_mut(&mut self, var_name: &str) -> Result<&mut Option<Box<Vec<Var>>>, String> {
+        let rst = self.get_var_mut(var_name);
         match rst {
             Ok(var) => {
                 if let Var::Array(ref mut array) = *var {
@@ -124,7 +124,7 @@ impl Varables {
         }
     }
 
-    fn get_var(&mut self, var_name: &str) -> Result<&mut Var, String> {
+    fn get_var_mut(&mut self, var_name: &str) -> Result<&mut Var, String> {
         if let Some(var) = self.data.get_mut(var_name) {
             return Ok(var);
         }
