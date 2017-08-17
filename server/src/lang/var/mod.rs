@@ -40,7 +40,7 @@ impl Varables {
                 if let Var::Macro(ref mut actions) = *var {
                     return Ok(actions);
                 }
-                return wrong_type_error(var_name, &DeclareVar::Macro, var);
+                wrong_type_error(var_name, &DeclareVar::Macro, var)
             }
             Err(msg) => Err(msg),
         }
@@ -53,7 +53,20 @@ impl Varables {
                 if let Var::String(ref mut string) = *var {
                     return Ok(string);
                 }
-                return wrong_type_error(var_name, &DeclareVar::String, var);
+                wrong_type_error(var_name, &DeclareVar::String, var)
+            }
+            Err(msg) => Err(msg),
+        }
+    }
+
+    pub fn get_string(&self, var_name: &str) -> Result<&Option<String>, String> {
+        let rst = self.get_var(var_name);
+        match rst {
+            Ok(var) => {
+                if let Var::String(ref string) = *var {
+                    return Ok(string);
+                }
+                wrong_type_error(var_name, &DeclareVar::String, var)
             }
             Err(msg) => Err(msg),
         }
@@ -66,7 +79,7 @@ impl Varables {
                 if let Var::Int(ref mut int) = *var {
                     return Ok(int);
                 }
-                return wrong_type_error(var_name, &DeclareVar::Int, var);
+                wrong_type_error(var_name, &DeclareVar::Int, var)
             }
             Err(msg) => Err(msg),
         }
@@ -79,7 +92,7 @@ impl Varables {
                 if let Var::Int(ref int) = *var {
                     return Ok(int);
                 }
-                return wrong_type_error(var_name, &DeclareVar::Int, var);
+                wrong_type_error(var_name, &DeclareVar::Int, var)
             }
             Err(msg) => Err(msg),
         }
@@ -92,7 +105,7 @@ impl Varables {
                 if let Var::Float(ref mut float) = *var {
                     return Ok(float);
                 }
-                return wrong_type_error(var_name, &DeclareVar::Float, var);
+                wrong_type_error(var_name, &DeclareVar::Float, var)
             }
             Err(msg) => Err(msg),
         }
@@ -105,7 +118,7 @@ impl Varables {
                 if let Var::Size(ref mut size) = *var {
                     return Ok(size);
                 }
-                return wrong_type_error(var_name, &DeclareVar::Size, var);
+                wrong_type_error(var_name, &DeclareVar::Size, var)
             }
             Err(msg) => Err(msg),
         }
@@ -118,7 +131,7 @@ impl Varables {
                 if let Var::Bool(ref mut boolean) = *var {
                     return Ok(boolean);
                 }
-                return wrong_type_error(var_name, &DeclareVar::Bool, var);
+                wrong_type_error(var_name, &DeclareVar::Bool, var)
             }
             Err(msg) => Err(msg),
         }
@@ -131,7 +144,7 @@ impl Varables {
                 if let Var::Array(ref mut array) = *var {
                     return Ok(array);
                 }
-                return wrong_type_error(var_name, &DeclareVar::Array, var);
+                wrong_type_error(var_name, &DeclareVar::Array, var)
             }
             Err(msg) => Err(msg),
         }
