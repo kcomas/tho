@@ -7,7 +7,7 @@ use server::lang::action::types::{AfterAction, Action};
 use server::lang::var::types::Var;
 
 #[test]
-fn declare_var() {
+fn declare_int() {
     let mut p = Program::new();
 
     p.load_actions(vec![
