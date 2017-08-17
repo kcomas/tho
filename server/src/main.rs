@@ -1,4 +1,3 @@
-
 extern crate server;
 
 use server::lang::Program;

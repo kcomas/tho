@@ -7,3 +7,7 @@ authors = ["kcomas <kevin.comas.git@gmail.com>"]
 serde = "*"
 serde_derive = "*"
 serde_json = "*"
+
+[[bin]]
+name = "server"
+doc = false
