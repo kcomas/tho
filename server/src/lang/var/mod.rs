@@ -72,6 +72,19 @@ impl Varables {
         }
     }
 
+    pub fn get_int(&self, var_name: &str) -> Result<&Option<i64>, String> {
+        let rst = self.get_var(var_name);
+        match rst {
+            Ok(var) => {
+                if let Var::Int(ref int) = *var {
+                    return Ok(int);
+                }
+                return wrong_type_error(var_name, &DeclareVar::Int, var);
+            }
+            Err(msg) => Err(msg),
+        }
+    }
+
     pub fn get_float_mut(&mut self, var_name: &str) -> Result<&mut Option<f64>, String> {
         let rst = self.get_var_mut(var_name);
         match rst {
@@ -126,6 +139,13 @@ impl Varables {
 
     fn get_var_mut(&mut self, var_name: &str) -> Result<&mut Var, String> {
         if let Some(var) = self.data.get_mut(var_name) {
+            return Ok(var);
+        }
+        not_found_error(var_name)
+    }
+
+    fn get_var(&self, var_name: &str) -> Result<&Var, String> {
+        if let Some(var) = self.data.get(var_name) {
             return Ok(var);
         }
         not_found_error(var_name)
