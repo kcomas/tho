@@ -57,3 +57,29 @@ fn declare_int() {
 
     assert_eq!(rst.unwrap().unwrap(), 3);
 }
+
+#[test]
+fn decalre_float() {
+    let mut p = Program::new();
+
+    p.load_actions(vec![
+        Action::Var {
+            op: VarOp::DeclareVar {
+                var_name: String::from("test_float"),
+                var: Var::Float(Some(4.56)),
+            },
+            success: AfterAction::Continue,
+            failure: AfterAction::Error,
+        },
+    ]);
+
+    p.run();
+
+    let state = p.get_state();
+
+    let rst = state.get_float("test_float");
+
+    assert!(rst.is_ok());
+
+    assert_eq!(rst.unwrap().unwrap(), 4.56);
+}

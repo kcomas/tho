@@ -111,6 +111,19 @@ impl Varables {
         }
     }
 
+    pub fn get_float(&self, var_name: &str) -> Result<&Option<f64>, String> {
+        let rst = self.get_var(var_name);
+        match rst {
+            Ok(var) => {
+                if let Var::Float(ref float) = *var {
+                    return Ok(float);
+                }
+                wrong_type_error(var_name, &DeclareVar::Float, var)
+            }
+            Err(msg) => Err(msg),
+        }
+    }
+
     pub fn get_size_mut(&mut self, var_name: &str) -> Result<&mut Option<usize>, String> {
         let rst = self.get_var_mut(var_name);
         match rst {
