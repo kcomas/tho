@@ -137,6 +137,19 @@ impl Varables {
         }
     }
 
+    pub fn get_size(&self, var_name: &str) -> Result<&Option<usize>, String> {
+        let rst = self.get_var(var_name);
+        match rst {
+            Ok(var) => {
+                if let Var::Size(ref size) = *var {
+                    return Ok(size);
+                }
+                wrong_type_error(var_name, &DeclareVar::Size, var)
+            }
+            Err(msg) => Err(msg),
+        }
+    }
+
     pub fn get_bool_mut(&mut self, var_name: &str) -> Result<&mut Option<bool>, String> {
         let rst = self.get_var_mut(var_name);
         match rst {

@@ -83,3 +83,29 @@ fn decalre_float() {
 
     assert_eq!(rst.unwrap().unwrap(), 4.56);
 }
+
+#[test]
+fn decalre_size() {
+    let mut p = Program::new();
+
+    p.load_actions(vec![
+        Action::Var {
+            op: VarOp::DeclareVar {
+                var_name: String::from("test_size"),
+                var: Var::Size(Some(20)),
+            },
+            success: AfterAction::Continue,
+            failure: AfterAction::Error,
+        },
+    ]);
+
+    p.run();
+
+    let state = p.get_state();
+
+    let rst = state.get_size("test_size");
+
+    assert!(rst.is_ok());
+
+    assert_eq!(rst.unwrap().unwrap(), 20);
+}
