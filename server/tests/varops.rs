@@ -117,3 +117,31 @@ fn decalre_size() {
 
     assert_eq!(rst.unwrap().unwrap(), 20);
 }
+
+#[test]
+fn decalre_bool() {
+    let mut p = Program::new();
+
+    p.load_actions(vec![
+        Action::Var {
+            op: VarOp::DeclareVar {
+                var_name: String::from("test_bool"),
+                var: Var::Bool(Some(true)),
+            },
+            success: AfterAction::Continue,
+            failure: AfterAction::Error,
+        },
+    ]);
+
+    p.run();
+
+    assert_eq!(p.get_output().get_exit_status().unwrap(), 0);
+
+    let state = p.get_state();
+
+    let rst = state.get_bool("test_bool");
+
+    assert!(rst.is_ok());
+
+    assert_eq!(rst.unwrap().unwrap(), true);
+}

@@ -163,6 +163,19 @@ impl Varables {
         }
     }
 
+    pub fn get_bool(&self, var_name: &str) -> Result<&Option<bool>, String> {
+        let rst = self.get_var(var_name);
+        match rst {
+            Ok(var) => {
+                if let Var::Bool(ref boolean) = *var {
+                    return Ok(boolean);
+                }
+                wrong_type_error(var_name, &DeclareVar::Bool, var)
+            }
+            Err(msg) => Err(msg),
+        }
+    }
+
     pub fn get_array_mut(&mut self, var_name: &str) -> Result<&mut Option<Box<Vec<Var>>>, String> {
         let rst = self.get_var_mut(var_name);
         match rst {
