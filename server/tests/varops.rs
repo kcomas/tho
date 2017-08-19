@@ -23,6 +23,8 @@ fn declare_string() {
 
     p.run();
 
+    assert_eq!(p.get_output().get_exit_status().unwrap(), 0);
+
     let state = p.get_state();
 
     let rst = state.get_string("test_string");
@@ -48,6 +50,8 @@ fn declare_int() {
     ]);
 
     p.run();
+
+    assert_eq!(p.get_output().get_exit_status().unwrap(), 0);
 
     let state = p.get_state();
 
@@ -75,6 +79,8 @@ fn decalre_float() {
 
     p.run();
 
+    assert_eq!(p.get_output().get_exit_status().unwrap(), 0);
+
     let state = p.get_state();
 
     let rst = state.get_float("test_float");
@@ -100,6 +106,8 @@ fn decalre_size() {
     ]);
 
     p.run();
+
+    assert_eq!(p.get_output().get_exit_status().unwrap(), 0);
 
     let state = p.get_state();
 

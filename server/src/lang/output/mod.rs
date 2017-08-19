@@ -23,6 +23,10 @@ impl Output {
         self.exit_status = Some(status);
     }
 
+    pub fn get_exit_status(&self) -> Option<u64> {
+        self.exit_status
+    }
+
     pub fn log(&mut self, msg: String) {
         self.messages.push(OutputType::Log(msg));
     }
