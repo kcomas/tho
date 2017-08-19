@@ -7,6 +7,48 @@ use server::lang::action::types::{AfterAction, Action};
 use server::lang::var::types::Var;
 
 #[test]
+fn decalre_macro() {
+    let mut p = Program::new();
+
+    p.load_actions(vec![
+        Action::Var {
+            op: VarOp::DeclareVar {
+                var_name: String::from("test_macro"),
+                var: Var::Macro(Some(vec![
+                    Action::Var {
+                        op: VarOp::DeclareVar {
+                            var_name: String::from("inner_value"),
+                            var: Var::String(Some(String::from("in_macro"))),
+                        },
+                        success: AfterAction::Continue,
+                        failure: AfterAction::Error,
+                    },
+                ])),
+            },
+            success: AfterAction::Continue,
+            failure: AfterAction::Error,
+        },
+        Action::Var {
+            op: VarOp::RunMacro(String::from("test_macro")),
+            success: AfterAction::Continue,
+            failure: AfterAction::Error,
+        },
+    ]);
+
+    p.run();
+
+    assert_eq!(p.get_output().get_exit_status().unwrap(), 0);
+
+    let state = p.get_state();
+
+    let rst = state.get_string("inner_value");
+
+    assert!(rst.is_ok());
+
+    assert_eq!(rst.unwrap().clone().unwrap(), "in_macro");
+}
+
+#[test]
 fn declare_string() {
     let mut p = Program::new();
 

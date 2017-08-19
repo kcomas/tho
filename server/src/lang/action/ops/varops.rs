@@ -12,8 +12,9 @@ pub enum VarOp {
     DeleteVar(String),
     SetMacro {
         var_name: String,
-        var_value: Vec<Action>,
+        var_value: Option<Vec<Action>>,
     },
+    RunMacro(String), // macro name
     SetString {
         var_name: String,
         var_value: Option<String>,
@@ -50,6 +51,38 @@ fn match_update<T: Clone>(
     }
 }
 
+pub fn run_macro(
+    rst: Result<Option<Vec<Action>>, String>,
+    var_name: &String,
+    state: &mut Varables,
+    output: &mut Output,
+) -> Result<String, String> {
+    match rst {
+        Ok(option) => {
+            match option {
+                Some(actions) => {
+                    for action in actions.iter() {
+                        let action_rst = action.run(state, output);
+                        match action_rst {
+                            Ok(option) => {
+                                if let Some(string) = option {
+                                    output.log(format!("Macro Log {}: {}", var_name, string));
+                                }
+                            }
+                            Err(string) => {
+                                return Err(format!("Macro Error {}: {}", var_name, string));
+                            }
+                        }
+                    }
+                    Ok(format!("Ran Macro: {}", var_name))
+                }
+                None => Err(String::from("Macro Declared But Not Set")),
+            }
+        }
+        Err(msg) => Err(msg),
+    }
+}
+
 impl Op for VarOp {
     fn run(&self, state: &mut Varables, output: &mut Output) -> Result<String, String> {
         match self {
@@ -64,6 +97,10 @@ impl Op for VarOp {
             } => {
                 let rst = state.get_macro_mut(var_name);
                 match_update(rst, var_name, var_value)
+            }
+            &VarOp::RunMacro(ref var_name) => {
+                let rst = state.get_macro(var_name);
+                run_macro(rst, var_name, state, output)
             }
             &VarOp::SetString {
                 ref var_name,

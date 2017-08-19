@@ -33,12 +33,25 @@ impl Varables {
         not_found_error(var_name)
     }
 
-    pub fn get_macro_mut(&mut self, var_name: &str) -> Result<&mut Vec<Action>, String> {
+    pub fn get_macro_mut(&mut self, var_name: &str) -> Result<&mut Option<Vec<Action>>, String> {
         let rst = self.get_var_mut(var_name);
         match rst {
             Ok(var) => {
                 if let Var::Macro(ref mut actions) = *var {
                     return Ok(actions);
+                }
+                wrong_type_error(var_name, &DeclareVar::Macro, var)
+            }
+            Err(msg) => Err(msg),
+        }
+    }
+
+    pub fn get_macro(&self, var_name: &str) -> Result<Option<Vec<Action>>, String> {
+        let rst = self.get_var(var_name);
+        match rst {
+            Ok(var) => {
+                if let Var::Macro(ref actions) = *var {
+                    return Ok(actions.clone());
                 }
                 wrong_type_error(var_name, &DeclareVar::Macro, var)
             }

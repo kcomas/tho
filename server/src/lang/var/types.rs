@@ -9,7 +9,7 @@ pub trait ShareVar {
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum Var {
-    Macro(Vec<Action>),
+    Macro(Option<Vec<Action>>),
     String(Option<String>),
     Int(Option<i64>),
     Float(Option<f64>),
