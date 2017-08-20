@@ -9,18 +9,18 @@ use std::clone::Clone;
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum ArrayOp {
     Push { array_name: String, var: Var },
-//    Pop {
-//        array_name: String,
-//        new_var_name: String,
-//    },
+    Pop {
+        array_name: String,
+        var_name: Option<String>,
+    },
 //    UnShift { array_name: String, var: Var },
 //    Shift {
 //        array_name: String,
-//        new_var_name: String,
+//        var_name: String,
 //    },
 //    Length {
 //        array_name: String,
-//        new_var_name: String,
+//        var_name: String,
 //    },
 }
 
@@ -48,6 +48,52 @@ impl Op for ArrayOp {
                     }
                     Err(msg) => Err(msg),
                 }
+            }
+            &ArrayOp::Pop {
+                ref array_name,
+                ref var_name,
+            } => {
+                let popped: Result<Var, String>;
+                {
+                    let rst = state.get_array_mut(array_name);
+                    popped = match rst {
+                        Ok(option_array) => {
+                            match *option_array {
+                                Some(ref mut arr) => {
+                                    match arr.pop() {
+                                        Some(var) => Ok(var),
+                                        None => Err(format!("Array {} is empty", array_name)),
+                                    }
+                                }
+                                None => Err(format!(
+                                    "Unable To Dereference Array {} For Push",
+                                    array_name
+                                )),
+                            }
+                        }
+                        Err(msg) => Err(msg),
+                    };
+                }
+
+                match popped {
+                    Ok(array_item) => {
+                        if let Some(ref name) = *var_name {
+                            // create or update var
+                            if let Ok(_) = state.get_var(name) {
+                                if let Err(msg) = state.delete_var(name) {
+                                    return Err(msg);
+                                }
+                            }
+                            if let Err(msg) = state.declare_var(name, &array_item) {
+                                return Err(msg);
+                            }
+                        }
+                    }
+                    Err(msg) => {
+                        return Err(msg);
+                    }
+                };
+                Ok(format!("Popped From Array: {}", array_name))
             }
         }
     }

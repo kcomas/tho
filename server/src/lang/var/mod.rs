@@ -209,7 +209,7 @@ impl Varables {
         not_found_error(var_name)
     }
 
-    fn get_var(&self, var_name: &str) -> Result<&Var, String> {
+    pub fn get_var(&self, var_name: &str) -> Result<&Var, String> {
         if let Some(var) = self.data.get(var_name) {
             return Ok(var);
         }
