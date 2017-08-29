@@ -26,6 +26,15 @@ impl Varables {
         Ok(format!("Created {}: {}", var.type_str(), var_name))
     }
 
+    pub fn re_declare_var(&mut self, var_name: &str, var: &Var) -> Result<String, String> {
+        if let Some(_) = self.data.get(var_name) {
+            if let Err(msg) = self.delete_var(var_name) {
+                return Err(msg);
+            }
+        }
+        self.declare_var(var_name, var)
+    }
+
     pub fn delete_var(&mut self, var_name: &str) -> Result<String, String> {
         if let Some(_) = self.data.remove(var_name) {
             return Ok(format!("Deleted Var: {}", var_name));
@@ -194,6 +203,19 @@ impl Varables {
         match rst {
             Ok(var) => {
                 if let Var::Array(ref mut array) = *var {
+                    return Ok(array);
+                }
+                wrong_type_error(var_name, &DeclareVar::Array, var)
+            }
+            Err(msg) => Err(msg),
+        }
+    }
+
+    pub fn get_array(&self, var_name: &str) -> Result<&Option<Box<Vec<Var>>>, String> {
+        let rst = self.get_var(var_name);
+        match rst {
+            Ok(var) => {
+                if let Var::Array(ref array) = *var {
                     return Ok(array);
                 }
                 wrong_type_error(var_name, &DeclareVar::Array, var)

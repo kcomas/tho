@@ -13,6 +13,10 @@ pub enum ArrayOp {
         array_name: String,
         var_name: Option<String>,
     },
+    // Length {
+    //     array_name: String,
+    //     var_name: String,
+    // },
 //    UnShift { array_name: String, var: Var },
 //    Shift {
 //        array_name: String,
@@ -66,7 +70,7 @@ impl Op for ArrayOp {
                                     }
                                 }
                                 None => Err(format!(
-                                    "Unable To Dereference Array {} For Push",
+                                    "Unable To Dereference Array {} For Pop",
                                     array_name
                                 )),
                             }
@@ -79,12 +83,7 @@ impl Op for ArrayOp {
                     Ok(array_item) => {
                         if let Some(ref name) = *var_name {
                             // create or update var
-                            if let Ok(_) = state.get_var(name) {
-                                if let Err(msg) = state.delete_var(name) {
-                                    return Err(msg);
-                                }
-                            }
-                            if let Err(msg) = state.declare_var(name, &array_item) {
+                            if let Err(msg) = state.re_declare_var(name, &array_item) {
                                 return Err(msg);
                             }
                         }
@@ -95,6 +94,18 @@ impl Op for ArrayOp {
                 };
                 Ok(format!("Popped From Array: {}", array_name))
             }
+            // &ArrayOp::Length {
+            //     ref array_name,
+            //     ref var_name,
+            // } => {
+            //     let rst = state.get_array(array_name);
+            //     match rst {
+            //         Ok(option_array) => {
+            //             match option_array {}
+            //         }
+            //         Err(msg) => Err(msg),
+            //     }
+            // }
         }
     }
 }
