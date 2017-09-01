@@ -8,6 +8,8 @@ use super::action::types::Action;
 use self::types::{Var, DeclareVar, ShareVar};
 use self::util::{declare_error, not_found_error, wrong_type_error};
 
+pub type VarArrayType = Option<Box<Vec<Var>>>;
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Varables {
     data: HashMap<String, Var>,
@@ -198,7 +200,7 @@ impl Varables {
         }
     }
 
-    pub fn get_array_mut(&mut self, var_name: &str) -> Result<&mut Option<Box<Vec<Var>>>, String> {
+    pub fn get_array_mut(&mut self, var_name: &str) -> Result<&mut VarArrayType, String> {
         let rst = self.get_var_mut(var_name);
         match rst {
             Ok(var) => {
@@ -211,7 +213,7 @@ impl Varables {
         }
     }
 
-    pub fn get_array(&self, var_name: &str) -> Result<&Option<Box<Vec<Var>>>, String> {
+    pub fn get_array(&self, var_name: &str) -> Result<&VarArrayType, String> {
         let rst = self.get_var(var_name);
         match rst {
             Ok(var) => {
