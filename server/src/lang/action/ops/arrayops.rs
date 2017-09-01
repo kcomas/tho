@@ -21,10 +21,6 @@ pub enum ArrayOp {
 //        array_name: String,
 //        var_name: String,
 //    },
-//    Length {
-//        array_name: String,
-//        var_name: String,
-//    },
 }
 
 impl Op for ArrayOp {
